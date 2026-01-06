@@ -90,7 +90,7 @@
         type: str
         returned: always
         sample: 'goodbye'
-'''
+    '''
 
     from ansible.module_utils.basic import AnsibleModule
     
