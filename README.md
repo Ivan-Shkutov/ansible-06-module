@@ -1,4 +1,4 @@
-  ## Домашнее задание к занятию 6 «Создание собственных модулей»
+    ## Домашнее задание к занятию 6 «Создание собственных модулей»
 
 ## Шкутов Иван Владимировчи
 
@@ -27,6 +27,11 @@
     . venv/bin/activate
     . hacking/env-setup
 
+Создать файл:
+
+    touch my_own_module.py
+    chmod +x my_own_module.py
+    
 Шаг 2. Наполните его содержимым:
 
     #!/usr/bin/python
@@ -162,21 +167,64 @@
 
     if __name__ == '__main__':
         main()
+        
 Или возьмите это наполнение из статьи.
+
+Требования к файлу my_own_module.py:
+
+    path — путь к файлу
+    content — содержимое
+    - идемпотентность
+    - создавать файл на удалённом хосте
+
 
 Шаг 3. Заполните файл в соответствии с требованиями Ansible так, чтобы он выполнял основную задачу: module должен создавать текстовый файл на удалённом хосте по пути, определённом в параметре path, с содержимым, определённым в параметре content.
 
 Шаг 4. Проверьте module на исполняемость локально.
 
+Первый запуск: changed: true
+
+Второй запуск: changed: false (идемпотентность)
+
+
 Шаг 5. Напишите single task playbook и используйте module в нём.
 
 Шаг 6. Проверьте через playbook на идемпотентность.
 
+Объяснение:
+
+    name — название плейбука
+    hosts — на каких хостах выполнять
+    gather_facts — отключаем сбор фактов
+    tasks — блок с задачами (внутри tasks идёт модуль my_own_module)
+
+Первый запуск: changed: true
+
+Второй запуск: changed: false (идемпотентность)
+
+
 Шаг 7. Выйдите из виртуального окружения.
+
+    deactivate
 
 Шаг 8. Инициализируйте новую collection: ansible-galaxy collection init my_own_namespace.yandex_cloud_elk.
 
+Инициализация collection:
+
+    ansible-galaxy collection init my_own_namespace.yandex_cloud_elk
+
+Создана структура collection с директориями plugins/modules, roles, playbooks:
+
+- чтобы модуль можно было использовать как часть collection, которая удобно распространяется и устанавливается.
+
+
 Шаг 9. В эту collection перенесите свой module в соответствующую директорию.
+
+Перенос модуля в collection:
+
+    - перенёс файл my_own_module.py в my_own_namespace/yandex_cloud_elk/plugins/modules/my_own_module.py
+    Чтобы Ansible мог найти модуль внутри collection через полное имя my_own_namespace.yandex_cloud_elk.my_own_module
+
 
 Шаг 10. Single task playbook преобразуйте в single task role и перенесите в collection. У role должны быть default всех параметров module.
 
@@ -186,11 +234,37 @@
 
 Шаг 13. Создайте .tar.gz этой collection: ansible-galaxy collection build в корневой директории collection.
 
+Собрать collection в архив .tar.gz
+
+Находясь в корне collection my_own_namespace/yandex_cloud_elk:
+
+    ansible-galaxy collection build
+
+После этого в текущей директории появится файл вроде:
+
+    my_own_namespace-yandex_cloud_elk-1.0.0.tar.gz
+
+
 Шаг 14. Создайте ещё одну директорию любого наименования, перенесите туда single task playbook и архив c collection.
 
 Шаг 15. Установите collection из локального архива: ansible-galaxy collection install <archivename>.tar.gz.
 
+Установить collection локально:
+    
+    ansible-galaxy collection install my_own_namespace-yandex_cloud_elk-1.0.0.tar.gz
+
+Это зарегистрирует collection в Ansible, и она станет доступна через namespace.
+
+
 Шаг 16. Запустите playbook, убедитесь, что он работает.
+
+Теперь можно использовать полный путь к модулю в collection:
+
+    ansible localhost \
+      -m my_own_namespace.yandex_cloud_elk.my_own_module \
+      -a "path=/tmp/test.txt content='Hello world'" \
+      -c local \
+      -e "ansible_python_interpreter=/usr/bin/python3"
 
 Шаг 17. В ответ необходимо прислать ссылки на collection и tar.gz архив, а также скриншоты выполнения пунктов 4, 6, 15 и 16.
 
