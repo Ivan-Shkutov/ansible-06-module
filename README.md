@@ -187,3 +187,18 @@
 Шаг 16. Запустите playbook, убедитесь, что он работает.
 
 Шаг 17. В ответ необходимо прислать ссылки на collection и tar.gz архив, а также скриншоты выполнения пунктов 4, 6, 15 и 16.
+
+
+
+![2](https://github.com/Ivan-Shkutov/my_own_collection/blob/main/2.png)
+
+![3](https://github.com/Ivan-Shkutov/my_own_collection/blob/main/3.png)
+
+![4](https://github.com/Ivan-Shkutov/my_own_collection/blob/main/4.png)
+
+![5](https://github.com/Ivan-Shkutov/my_own_collection/blob/main/5.png)
+
+![6](https://github.com/Ivan-Shkutov/my_own_collection/blob/main/6.png)
+
+![7](https://github.com/Ivan-Shkutov/my_own_collection/blob/main/7.png)
+
